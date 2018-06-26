@@ -1,0 +1,25 @@
+@import url('base.css');
+
+html {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+body {
+    display : flex;
+    flex-flow: column nowrap;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+body > header{
+    flex: 0 0 8rem;
+}
+body > footer{
+    flex: 0 0 2rem;
+}
+body > main{
+    flex: 1 1 auto;
+    position: relative;
+    height: 100%;
+}

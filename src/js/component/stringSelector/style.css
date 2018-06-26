@@ -1,0 +1,47 @@
+
+
+.string-selector {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    height: 8rem;
+}
+
+.string-selector ul {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    width: 100%;
+    height: 8rem;
+}
+.string-selector li {
+    flex: 0 0 4rem;
+}
+
+.string-selector li a {
+    font-size : 2rem;
+    width : 4rem;
+    height : 4rem;
+    padding: 1.25rem 1rem 1rem 1rem;
+    border-radius : 1rem;
+    border: solid .3rem #ddd;
+    background-color: #888;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: .5rem .5rem .25rem 0 rgba(0,0,0,0.75);
+    outline : none;
+}
+.string-selector li a:focus,
+.string-selector li a:hover,
+.string-selector li a:active {
+    background-color: #7EB0C9;
+    transition: background-color 300ms ease-out;
+}
+.string-selector li a.active {
+    background-color: #3E81A3;
+    transition: background-color 300ms ease-out;
+}

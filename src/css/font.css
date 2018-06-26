@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Kalam';
+    src:url('../fonts/Kalam-Regular.eot');
+    src:url('../fonts/Kalam-Regular.eot?#iefix') format('embedded-opentype'),
+            url('../fonts/Kalam-Regular.woff') format('woff'),
+            url('../fonts/Kalam-Regular.ttf') format('truetype'),
+            url('../fonts/Kalam-Regular.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+

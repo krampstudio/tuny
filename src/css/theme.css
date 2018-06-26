@@ -1,0 +1,30 @@
+
+body {
+    background-color: #444;
+    color: #fff;
+    font-family: Orbitron;
+}
+
+
+
+/** Header **/
+
+body > header {
+    text-align: center;
+}
+body > header h1 {
+    font-size: 3rem;
+    margin : 1rem auto;
+    color: #7EB0C9;
+}
+
+
+/** Footer **/
+
+body > footer {
+    text-align: center;
+    margin : .5rem auto;
+}
+body > footer a {
+    color: #fff;
+}
