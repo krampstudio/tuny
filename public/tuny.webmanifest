@@ -1,7 +1,7 @@
 {
   "name": "Tuny",
   "short_name": "tuny",
-  "start_url": "/index.html",
+  "start_url": "https://krampstudio.com/tuny/public/index.html",
   "lang": "en",
   "background_color": "#444444",
   "description": "Guitar tuner",

@@ -8,7 +8,7 @@ import '../css/app.css';
  * Service worker
  */
 if ('serviceWorker' in window.navigator) {
-    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+    navigator.serviceWorker.register('sw.js').then(function(reg) {
         console.log('Registration succeeded. Scope is ' + reg.scope);
     }).catch(function(error) {
         console.error('Registration failed with ' + error);
