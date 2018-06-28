@@ -1,6 +1,7 @@
 const path = require('path');
 
-module.exports = {
+module.exports = [{
+    name : 'app',
     entry: './src/js/app.js',
     output: {
         filename: 'bundle.js',
@@ -30,4 +31,11 @@ module.exports = {
             ]
         }]
     }
-};
+}, {
+    name : 'sw',
+    entry: './src/js/sw.js',
+    output: {
+        filename: 'sw.js',
+        path: path.resolve(__dirname, 'public/')
+    }
+}];

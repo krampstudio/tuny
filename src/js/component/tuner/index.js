@@ -33,12 +33,17 @@ export default function tunerComponentFactory(){
             state : states.none
         },
 
+        setNote(note){
+            this.noteElt.textContent = note.toUpperCase();
+        },
 
         render(node, position = 'beforeend'){
             if( ! (node instanceof HTMLElement) ){
                 throw new TypeError('Wrong component container node');
             }
             node.insertAdjacentHTML(position, tunerTemplate(this.data));
+            this.element = node.querySelector('.tuner');
+            this.noteElt = this.element.querySelector('.note');
 
 
             return this;
