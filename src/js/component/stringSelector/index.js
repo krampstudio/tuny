@@ -1,58 +1,60 @@
-import stringSelectorTemplate from './template.js';
-import './style.css';
+import isolate from '@cycle/isolate';
+import { div, ul, li, a } from '@cycle/dom';
 
+function intent(domSource){
+    const changeString$ =  domSource
+        .select('.string').events('click')
+        .map( ev => ev.target.dataset.position);
 
-export default function stringSelectorComponentFactory(){
+    return { changeString$ };
+}
+
+function model(actions, props$){
+
+    const { changeString$ } = actions;
+
+    return props$.map( props => {
+
+        return changeString$
+            .startWith(props.initialString)
+            .map( activePosition => ({ activePosition, preset : props.preset }));
+
+    }).flatten().remember();
+}
+
+function view(state$){
+    return state$.map( state => (
+        div(
+            ul(
+                state.preset.map( (string, position) => (
+                    li(
+                        a({
+                            attrs : {
+                                href : '#',
+                                'data-pitch' : string.pitch,
+                                'data-frequency' : string.frequency,
+                                'data-position' : position,
+                                class : ['string', parseInt(state.activePosition, 10) === position ? 'active' : ''].join(' ')
+                            }
+                        },
+                        string.name)
+                    )
+                ))
+            )
+        )
+    ));
+}
+
+function stringSelector(sources){
+    const actions = intent(sources.DOM);
+    const state$  = model(actions, sources.props);
+    const vdom$   = view(state$);
 
     return {
-
-        selectedNote : null,
-
-        selectNote(note){
-            if (note && note !== this.selectedNote){
-                this.notes.forEach( noteElt => {
-                    if(noteElt.dataset.note === note){
-                        noteElt.classList.add('active');
-                        this.selectedNote = note;
-
-                        if(typeof this.selectNote === 'function'){
-                            this.noteChangeCb(note);
-                        }
-
-                    } else {
-                        noteElt.classList.remove('active');
-                    }
-                });
-            }
-            return this;
-        },
-
-        onNoteChange( cb ){
-            if(typeof cb === 'function'){
-                this.noteChangeCb = cb;
-            }
-            return this;
-        },
-
-        render(node, position = 'beforeend'){
-
-            if( ! (node instanceof HTMLElement) ){
-                throw new TypeError('Wrong component container node');
-            }
-            node.insertAdjacentHTML(position, stringSelectorTemplate());
-
-            this.element = node.querySelector('.string-selector');
-            this.notes   = this.element.querySelectorAll('[data-note]');
-
-            this.element.addEventListener('click', e => {
-                e.preventDefault();
-
-                if(e.target.dataset.note){
-                    this.selectNote(e.target.dataset.note);
-                }
-            });
-
-            return this;
-        }
+        DOM: vdom$,
+        value: state$
     };
 }
+
+export default isolate(stringSelector, '.string-selector');
+

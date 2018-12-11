@@ -1,36 +1,56 @@
+import xs from 'xstream';
+import { run } from '@cycle/run';
+import { makeDOMDriver, div } from '@cycle/dom';
 
-import stringSelectorComponentFactory from './component/stringSelector/index.js';
-import tunerComponentFactory from './component/tuner/index.js';
-import '../css/app.css';
+import stringSelector from './component/stringSelector';
+import tuner from './component/tuner';
 
+import presets from './data/presets.js';
+//import '../css/app.css';
 
-/**
- * Service worker
- */
-if ('serviceWorker' in window.navigator) {
-    navigator.serviceWorker.register('sw.js').then(function(reg) {
-        console.log('Registration succeeded. Scope is ' + reg.scope);
-    }).catch(function(error) {
-        console.error('Registration failed with ' + error);
+//source = input (read) effect
+//sink   = output (write) effect
+
+function main(sources) {
+
+    const props$  = xs.of({
+        preset : presets.e.strings,
+        initialString : 0
     });
+
+    const stringSources = {
+        ...sources,
+        props:  props$
+    };
+
+    const stringSelectorSinks = stringSelector(stringSources);
+    const stringSelectorVDom$ = stringSelectorSinks.DOM;
+    const stringSelectorValue$ = stringSelectorSinks.value;
+
+    const tunerSources = {
+        ...sources,
+        props: stringSelectorValue$
+    };
+
+    const tunerSinks = tuner(tunerSources);
+
+    const vdom$ = xs
+        .combine(stringSelectorVDom$, stringSelectorValue$, tunerSinks.DOM)
+        .map( ([stringSelectorDom, value, tunerDom]) =>
+            div([
+                stringSelectorDom,
+                div(JSON.stringify(value)),
+                tunerDom
+            ])
+        );
+
+    return {
+        DOM: vdom$
+    };
 }
 
-/**
- * Entry point
- */
-function main(){
 
-    const container = document.querySelector('main');
-    const stringSelector = stringSelectorComponentFactory().render(container);
-    const tunerComponent = tunerComponentFactory().render(container);
+run(main, {
+    DOM: makeDOMDriver('body > main')
+});
 
-    stringSelector
-        .onNoteChange( note => {
-
-            tunerComponent.setNote(note.slice(0, 1));
-
-        })
-        .selectNote('a');
-}
-
-main();

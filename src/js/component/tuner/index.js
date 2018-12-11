@@ -1,52 +1,40 @@
-import tunerTemplate from './template.js';
-import './style.css';
+import isolate from '@cycle/isolate';
+import { section, div, p } from '@cycle/dom';
 
-var states = {
-    none : {
-        id : 'none',
-        desc : 'No song detected'
-    },
-    far : {
-        id : 'far',
-        desc :  'Too far from the target note'
-    },
-    up: {
-        id : 'up',
-        desc : 'Note up the target, release the string'
-    },
-    down: {
-        id : 'down',
-        desc : 'Note down the target, tight the string'
-    },
-    match : {
-        id : 'match',
-        desc : 'Note is matching'
-    }
-};
+//import './style.css';
 
-export default function tunerComponentFactory(){
+function intent(domSource){
+
+    return {  };
+}
+
+function model(actions, props$){
+
+    const {  } = actions;
+
+    return props$.map( props => props.preset[props.activePosition] );
+}
+
+function view(state$){
+
+    return state$.map( state => {
+        console.log(name);
+        return section([
+            div('.note', { 'data-state' : 'none'}, state.name.toUpperCase()),
+            p( '0' )
+        ])
+    });
+}
+
+function tuner(sources){
+    const actions = intent(sources.DOM);
+    const state$  = model(actions, sources.props);
+    const vdom$   = view(state$);
 
     return {
-
-        data : {
-            note  : 'a',
-            state : states.none
-        },
-
-        setNote(note){
-            this.noteElt.textContent = note.toUpperCase();
-        },
-
-        render(node, position = 'beforeend'){
-            if( ! (node instanceof HTMLElement) ){
-                throw new TypeError('Wrong component container node');
-            }
-            node.insertAdjacentHTML(position, tunerTemplate(this.data));
-            this.element = node.querySelector('.tuner');
-            this.noteElt = this.element.querySelector('.note');
-
-
-            return this;
-        }
+        DOM: vdom$
     };
 }
+
+export default isolate(tuner, '.tuner');
+
